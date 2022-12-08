@@ -48,7 +48,7 @@
   </div>
 
 </div>
-<button id="add_option" @click="AddOptions()" class="btn btn-primary">+Add Option</button>
+<button id="add_option" @click="AddOptions()" class="btn btn-primary" style="margin-top: 1rem;">+Add Option</button>
 <div class="d-inline-flex w-100  justify-content-between h-full">
   <button @click="formClearandClose();" class="btn btn-danger" style="margin-left: 1rem; margin-bottom: 1rem;">Close</button>
   <button @click="formObjectName(); formObjectDesc(); formTextMax(); formOptions(); formClearandClose();" class="btn btn-success" style="margin-right: 1rem; margin-bottom: 1rem;">Save</button>

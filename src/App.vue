@@ -10,7 +10,7 @@
     <input id="title-input" class="form-control" style="width: 90%;align-self: center;" type="text">
     
     <formAdd v-if="Addform"></formAdd>
-    <formObjectVue></formObjectVue>
+    <formObjectVue style="align-self: center;"></formObjectVue>
     <button style="margin-top: 1rem;align-self: center;" @click="formCleaner()" class="btn btn-outline-primary">+Add Question</button>
   </div>
   <div class="footer"><button type="button" class="btn btn-primary">Save</button></div>
