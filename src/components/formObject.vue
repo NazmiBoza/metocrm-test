@@ -11,61 +11,65 @@ export default {
     },
     select: function(event) {
             let targetId = ("main"+event.currentTarget.id);
-            console.log("selam");
             document.getElementById(targetId).style.display = "none";
-          }
+          },
+      selam(){
+      }
   },
   created() {
     this.$watch('Form_created', (a) => {
       if(a!=0)
       {
-        var selectbox="";
-        var required="";
-        this.formIdPlus();
-        var list = document.getElementById("forms");
-        
-        for(var item in this.Form_options){
-        selectbox+= `<option>${this.Form_options[item]}</option>`
-      }
-      if(this.Form_isRequired==true){
-        required=`<p style="color:red;">*this field is required</p>`;
-      }
-      selectbox += `</select> ${required} </div></div>`
-      
-      }
-        list.innerHTML += `<div  style="display:flex;" class="form-object-main">
+            document.querySelectorAll(".form-object-main").forEach(el => el.remove()); 
+       
+        for(let counter=1;counter<(a+1);counter++)//Formları Seçilen Dil'e göre otomatik olarak ekranda oluşturmak için.
+        {
+          if(this.Form_items[counter-1].lang==this.SelectedLang)
+          {
+          var selectbox="";
+          var required="";
+            for(var item in this.Form_items[(counter-1)].formOptions) {
+          selectbox+= `<option>${this.Form_options[item]}</option>`
+            }
+            this.formIdPlus();
+            var list = document.getElementById("forms");
+            if(this.Form_items[(counter-1)].isRequired==true){
+            required=`<p style="color:red;">*this field is required</p>`;
+            }
+            selectbox += `</select> ${required} </div></div>`
+            list.innerHTML += `<div id="newForm"  style="display:flex;" class="form-object-main">
             
             <div id="main${this.formId}"  class="form-object">
-      <h2 style="align-self: start;margin-top: 1rem;margin-left: 5rem;">${this.Form_name}</h2>
+      <h2 style="align-self: start;margin-top: 1rem;margin-left: 5rem;">${this.Form_items[counter-1].formName}</h2>
       
-      <p style="align-self: start;margin-left: 5rem;">${this.Form_description}</p>
+      <p style="align-self: start;margin-left: 5rem;">${this.Form_items[(counter-1)].formDescription}</p>
       <select style="width: 20rem;" class="form-control" id="inputType${this.formId}" >${selectbox} `;
+        
+        
+      }
       
-    })
+        }
+        
+
+ 
+      
+     }})
   },
   computed:{
-    
+    Form_items(){
+      return this.$store.state.Forms;
+    },
     Form_created(){
             return this.$store.state.form_created;
         },
-    Form_name(){
-            return this.$store.state.form_name;
-        }
-        ,
+    SelectedLang(){
+            return this.$store.state.selectedLang;
+        },
     Form_isRequired(){
             return this.$store.state.form_isRequired;
-        }
-        ,
-    Form_description(){
-            return this.$store.state.form_description;
-        }
-        ,
+        },
     Form_type(){
             return this.$store.state.form_type;
-        }
-        ,
-    Form_text_max(){
-            return this.$store.state.form_text_max;
         }
         ,
     Form_options(){

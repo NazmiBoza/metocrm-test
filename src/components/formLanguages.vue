@@ -1,6 +1,5 @@
 <template>
     <div>
-       
     <div class="lan">
 <lan-items class="d-inline-flex " v-for="item in Languages" :key="item.id">
     <div  v-if="(Languages[0]==item)" ><input :id="item" @click="onLangChange(item)" name="options" type="radio" class="btn-check"   autocomplete="off" checked>

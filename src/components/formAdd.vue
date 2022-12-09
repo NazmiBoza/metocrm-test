@@ -6,7 +6,7 @@
          
       <h4 @click="formClearandClose()" style="margin-right: 1rem;margin-top: 0.5rem;">x</h4></div>
       <p>Input Type</p>
-    <select class="form-control" id="inputType" @change="selectedForm" style="width: 25rem;margin-top: 0.5rem;">
+    <select class="form-control" id="inputType" style="width: 25rem;margin-top: 0.5rem;">
       <option value="main">Selectbox</option>
     </select>
       <p>Is Required</p>
@@ -27,11 +27,11 @@
 <p style="margin-top: 0.5rem;">Options</p>
 <div id="text_selected" style="display: none;">        
   <p>Max Lenght</p>               
-    <input value="0" type="number" id="replyNumber" min="0" step="1" data-bind="value:replyNumber" style="width: 5rem;"/>
+    
 </div>
 
 <div v-if="(FormOptions!=0)" id="add_options_block"  class="options">
-  <div :id="(item+100)" v-for="item in FormOptions" :key=item.id class="optionsettings">
+  <div :id="(item+100)" v-for="item in FormOptions" :key=item.id class="optionsettings"> <!--Form'da Daha Fazla Seçenek Ekleme Kısmı-->
     <div   class="d-inline-flex  mt-2" >
       <input :id="(item+1000)"  class="form-control" type="text">
       <button :id="item" @click="select($event)" class="x-button">
@@ -51,7 +51,7 @@
 <button id="add_option" @click="AddOptions()" class="btn btn-primary" style="margin-top: 1rem;">+Add Option</button>
 <div class="d-inline-flex w-100  justify-content-between h-full">
   <button @click="formClearandClose();" class="btn btn-danger" style="margin-left: 1rem; margin-bottom: 1rem;">Close</button>
-  <button @click="formObjectName(); formObjectDesc(); formTextMax(); formOptions(); formClearandClose();" class="btn btn-success" style="margin-right: 1rem; margin-bottom: 1rem;">Save</button>
+  <button @click=" formOptions();form_Create();  formClearandClose();AddOptions(); " class="btn btn-success" style="margin-right: 1rem; margin-bottom: 1rem;">Save</button>
 </div>
     </div>
   </div>
@@ -68,38 +68,28 @@
         AddOptions(){
             this.$store.commit("addOptions")
         },
-        formAdd(val){
-        this.$store.commit("formAdd",val);
+        form_Create(){//Form burada oluşturuluyor
+        let formInfo={lang:this.$store.state.selectedLang, question:this.$store.state.form_created, formName:(document.getElementById("quest").value), 
+        isRequired:this.$store.state.form_isRequired,formDescription:document.getElementById("desc").value,formOptions:this.$store.state.form_options};
+        this.$store.commit("formCreate",formInfo);
         },
-        formObjectName(){
-          this.$store.commit("formObjectName",document.getElementById("quest").value);
-          
-        },
-        formObjectDesc(){
-          this.$store.commit("formObjectDesc",document.getElementById("desc").value);
-        },
+        
         changeRequired(){
           this.$store.commit("changeRequired")
         }
         ,
-        formTextMax(){
-          this.$store.commit("formTextMax",parseInt(document.getElementById("replyNumber").value));
-          
-        },
         formOptions(){
           let formoptionsarray=[];
           if(this.FormOptions!=0)
           {
             for(let itemid=1;itemid<(this.FormOptions+1);itemid++){
                formoptionsarray.push(document.getElementById(itemid+1000).value);
-               console.log(document.getElementById(itemid+1000).value)
                 }
-              console.log(formoptionsarray)
           }
           this.$store.commit("formOptions",formoptionsarray);
         },
-        formClearandClose(){
-          
+        formClearandClose(){//Form ekleme işlemi bittikten sonra sayfanın kapanması ve elementlerin sıfırlanması için
+          this.$store.commit("formAdd",false);
           if(this.FormOptions!=0)
           {
             for(let itemid=1;itemid<(this.FormOptions+1);itemid++){
@@ -112,31 +102,14 @@
           document.getElementById("exampleRadios1").checked = true;
           document.getElementById("quest").value = "";
           document.getElementById("desc").value = "";
-          document.getElementById("replyNumber").value = 0;
-          this.formAdd(false);
+          
         },
         select: function(event) {
             let targetId = parseInt(event.currentTarget.id)+100;
-            console.log(targetId);
+       
             document.getElementById(targetId).style.display = "none";
           },
-        selectedForm(){
-          var e = document.getElementById("inputType");
-          var text = e.options[e.selectedIndex].text;
-          if(text=="Text")
-          {
-            document.getElementById("text_selected").style.display = "block";
-            document.getElementById("add_option").style.display = "none";
-            document.getElementById("add_options_block").style.display = "none";
-            
-          }
-          else{
-            document.getElementById("text_selected").style.display = "none";
-            document.getElementById("add_option").style.display = "block";
-            document.getElementById("add_options_block").style.display = "block";
-          }
-
-        }
+       
        }
     }
 
